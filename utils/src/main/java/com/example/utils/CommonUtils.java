@@ -15,9 +15,13 @@ import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 import com.hb.dialog.dialog.ConfirmDialog;
 import com.kongzue.dialog.v2.DialogSettings;
 import com.kongzue.dialog.v2.Notification;
@@ -146,8 +150,8 @@ public class CommonUtils {
      * @关键字 key
      * @需要存储的值 text
      */
-    public static void SaveInfo(String Mode,String key,String text){
-        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences(Mode, Context.MODE_PRIVATE);
+    public static void SaveInfo(Context context,String Mode,String key,String text){
+        SharedPreferences preferences = context.getSharedPreferences(Mode, Context.MODE_PRIVATE);
         preferences.edit().putString(key, text).apply();
     }
 
@@ -157,8 +161,8 @@ public class CommonUtils {
      * @关键字 key
      * @return
      */
-    public static String SharedInfo(String Mode, String key){
-        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences(Mode, Context.MODE_PRIVATE);
+    public static String SharedInfo(Context context,String Mode, String key){
+        SharedPreferences preferences = context.getSharedPreferences(Mode, Context.MODE_PRIVATE);
         String text = preferences.getString(key,null);
         return text;
     }
@@ -167,8 +171,8 @@ public class CommonUtils {
      * 清除保存的存储信息
      * @存储名 Mode
      */
-    public static void ClearInfo(String Mode){
-        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences(Mode, Context.MODE_PRIVATE);
+    public static void ClearInfo(Context context,String Mode){
+        SharedPreferences preferences = context.getSharedPreferences(Mode, Context.MODE_PRIVATE);
         preferences.edit().clear().apply();
     }
 
@@ -439,4 +443,55 @@ public class CommonUtils {
                 .build();
         okHttpClient.newCall(request).enqueue(callback);
     }
+
+    /**
+     * 保持不息屏
+     * @param activity
+     */
+    public static void KeepScreenOn(Activity activity) {
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    /**
+     * 去除状态栏
+     * @param activity
+     */
+    public static void HideStatusBar(Activity activity) {
+        ImmersionBar.with(activity).hideBar(BarHide.FLAG_HIDE_STATUS_BAR).init();
+    }
+
+    /**
+     * 设置状态栏颜色
+     * @param activity
+     * @颜色值 color
+     */
+    public static void SetSystemBarColor(Activity activity,int color) {
+        ImmersionBar.with(activity).statusBarColor(color);
+    }
+
+    /**
+     * 全屏
+     * @param activity
+     */
+    public static void SetFullScreen(Activity activity) {
+        ImmersionBar.with(activity).init();
+    }
+
+    /**
+     * 再按一次退出提醒
+     * @上下文 context
+     */
+    public static void QuitShow(Activity context){
+        long waitTime = 2000;
+        long touchTime = 0;
+        long currentTime = System.currentTimeMillis();
+        if((currentTime-touchTime)>=waitTime) {
+            //让Toast的显示时间和等待时间相同
+            Toast.makeText(context, "再按一次退出", (int)waitTime).show();
+            touchTime = currentTime;
+        }else {
+            context.finish();
+        }
+    }
+
 }

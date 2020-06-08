@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +43,13 @@ public class GlideLoader implements ImageLoader {
     @Override
     public void clearMemoryCache() {
         //清理缓存
-        Glide.get(MyApplication.getContext()).clearMemory();
+    }
+
+    /**
+     * //清理缓存
+     * @param context
+     */
+    public  static void ClearMemoryCache(Context context){
+        Glide.get(context).clearMemory();
     }
 }

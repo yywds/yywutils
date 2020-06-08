@@ -40,5 +40,6 @@ dependencies {
     implementation 'com.github.HanHuoBin:BaseDialog:1.2.0'//对话框
     implementation 'com.lcw.library:imagepicker:2.2.7'//上传图片
     implementation 'com.zxn.imagepicker:zImagePicker:1.0.2'//上传图片
+    implementation 'com.gyf.immersionbar:immersionbar:3.0.0-beta05'//沉浸式状态栏
 
 }
